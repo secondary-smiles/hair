@@ -1,11 +1,13 @@
 use std::io::prelude::*;
 use std::net::TcpStream;
 
+pub struct Response {
+    pub headers: String,
+    pub body: String,
+}
+
 pub fn send_request_and_recv(stream: &mut TcpStream, host: &str) -> String {
-    let request = format!(
-        "GET / HTTP/1.0\r\nHost: www.{}\r\nAccept-Language: en-us\r\n\r\n",
-        host
-    );
+    let request = format!("GET / HTTP/1.0\r\nAccept: */*\r\n Host: {}\r\n\r\n", host);
 
     stream.write(request.as_bytes()).unwrap();
 
@@ -26,19 +28,22 @@ pub fn send_request_and_recv(stream: &mut TcpStream, host: &str) -> String {
     return data.to_string();
 }
 
-pub fn parse_request(request: String) -> Vec<String> {
+pub fn parse_request(request: String) -> Response {
     let lines: Vec<&str> = request.split("\r\n").collect();
-    let mut response = String::new();
-    let mut contents = String::new();
+    let mut headers = String::new();
+    let mut body = String::new();
     let mut part = false;
     for line in lines {
         if line != "" && part == false {
-            response.push_str(format!("{}\n", line).as_str());
+            headers.push_str(format!("{}\n", line).as_str());
         } else if line == "" && part == false {
             part = true;
-        } else if line != "" && part == true {
-            contents.push_str(format!("{}\n", line).as_str());
+        } if part == true {
+            body.push_str(format!("{}\n", line).as_str());
         }
     }
-    vec![response, contents]
+    Response {
+        headers: headers,
+        body: body,
+    }
 }
