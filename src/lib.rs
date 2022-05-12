@@ -6,8 +6,19 @@ pub struct Response {
     pub body: String,
 }
 
-pub fn send_request_and_recv(stream: &mut TcpStream, host: &str) -> String {
-    let request = format!("GET / HTTP/1.0\r\nAccept: */*\r\n Host: {}\r\n\r\n", host);
+pub struct Request {
+    pub method: String,
+    pub path: String,
+    pub host: String,
+}
+
+pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> String {
+    let user_agent: String = format!("hair/{}", env!("CARGO_PKG_VERSION").to_string());
+
+
+    let request = format!("{} {} HTTP/1.0\r\nAccept: */*\r\nHost: {}\r\nUser-Agent: {}\r\n\r\n", request.method, request.path, request.host, user_agent);
+
+    println!("{}", request);
 
     stream.write(request.as_bytes()).unwrap();
 
@@ -43,7 +54,7 @@ pub fn parse_request(request: String) -> Response {
         }
     }
     Response {
-        headers: headers,
-        body: body,
+        headers: headers.to_string(),
+        body: body.to_string(),
     }
 }

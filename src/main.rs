@@ -1,17 +1,23 @@
 mod lib;
-use lib::{ send_request_and_recv, parse_request };
+use lib::{ send_request_and_recv, parse_request, Request };
 use std::io::prelude::*;
 use std::net::TcpStream;
 
 fn main() {
-    let host = "gnu.org";
+    
+    let request = Request {
+        method: "GET".to_string(),
+        path: "/".to_string(),
+        host: "linux.org".to_string(),
+    };
+    
     let mut stream =
-        TcpStream::connect(format!("{}:80", host)).expect("Could not connect to server");
+        TcpStream::connect(format!("{}:80", request.host)).expect("Could not connect to server");
 
-    let raw_data = send_request_and_recv(&mut stream, &host);
+    let raw_data = send_request_and_recv(&mut stream, &request);
     let response = parse_request(raw_data);
 
-    println!("{}", response.headers);
+    println!("{}", response.body);
 
     stream.flush().unwrap();
 }
