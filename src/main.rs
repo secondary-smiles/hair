@@ -1,16 +1,14 @@
 mod lib;
-use lib::{ send_request_and_recv, parse_request, Request };
+use lib::{parse_request, send_request_and_recv, Request};
 use std::io::prelude::*;
 use std::net::TcpStream;
 
 fn main() {
-    
     let request = Request {
         method: "GET".to_string(),
-        path: "/".to_string(),
+        path: "/cdn-cgi/apps/head/tDLqUt1CigNvpUlB1HaZZyDm9ZY.js".to_string(),
         host: "linux.org".to_string(),
     };
-    
     let mut stream =
         TcpStream::connect(format!("{}:80", request.host)).expect("Could not connect to server");
 
