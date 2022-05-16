@@ -1,6 +1,7 @@
 <br/>
-    <img height="100" alt="Hair Banner" src="TODO" />
+    <img alt="Hair Banner" height="200" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/front/Hair-Banner.png" />
 </br>
+
 # Hair
 
 <!-- SHIELDS BEGIN -->
