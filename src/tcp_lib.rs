@@ -1,6 +1,8 @@
 use std::io::prelude::*;
 use std::net::TcpStream;
 
+pub const VERSION: &'static str = "0.1.1";
+
 pub struct Url {
     pub host: String,
     pub path: String,
@@ -17,7 +19,7 @@ pub struct Request {
 }
 
 pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> String {
-    let user_agent: String = format!("hair/{}", env!("CARGO_PKG_VERSION").to_string());
+    let user_agent: String = format!("hair/{}", VERSION);
 
     let send_request = format!(
         "{} {} HTTP/1.0\r\nAccept: */*\r\nHost: {}\r\nUser-Agent: {}\r\n\r\n",

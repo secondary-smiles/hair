@@ -1,14 +1,14 @@
 // Other files
-mod lib;
+mod tcp_lib;
 mod cli_lib;
 
 // Local dependencies
-use lib::{parse_request, send_request_and_recv, Request};
+use tcp_lib::{parse_request, send_request_and_recv, Request};
 use cli_lib:: { parse_args };
 
 // Dependencies
 use std::io::prelude::*;
-use std::net::TcpStream;
+use std::net::{ TcpStream, Shutdown };
 use std::env::args;
 
 fn main() {
@@ -23,4 +23,5 @@ fn main() {
     println!("{}{}", response.headers, response.body);
 
     stream.flush().unwrap();
+    stream.shutdown(Shutdown::Both).expect("Shutdown call failed");
 }
