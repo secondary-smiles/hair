@@ -1,3 +1,8 @@
+# releases holds a local cache of previous releases of hair
+releases/
+
+# Pixelmator pro files (like photoshop)
+*.pxd
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,Macos,rust
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,Macos,rust

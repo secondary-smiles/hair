@@ -27,6 +27,7 @@ Contributions are always welcome (though I suspect I will be the only one workin
 - [ ] Add `-` commands to cli (like `-v` for version)
 - [ ] Make `-` commands reorderable
 - [ ] Add to package managers like `brew` and `cargo`
+- [ ] Add support for HTTP 1.1+ and HTTPS
 - [ ] Autocomplete
 - [ ] Colored output
 - [ ] Graceful error handling
