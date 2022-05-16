@@ -17,11 +17,11 @@
 ## Instalation
   <details>
   <summary>
-    MacOS
+   &#8594; MacOS
   </summary>
     <details>
         <summary>
-            From releases
+           &#8594; From releases
         </summary>
         <ul>
         <li> Go to the latest release </li>
@@ -32,22 +32,22 @@
     </details>
     <details>
     <summary>
-        From source
+       &#8594; From source
     </summary>
-    Makefile coming soon!
+    &#8594; Makefile coming soon!
     With <code>rustc</code>
     <ul>
-    <li><code>$ git clone https://github.com/secondary-smiles/hair.git</code></li>
-    <li><code>$ cd hair</code></li>
-    <li><code>$ rustc src/main.rs -o hair</code></li>
-    <li>add <code>hair</code> to your <code>$PATH</code></li>
+    <li><code>git clone https://github.com/secondary-smiles/hair.git</code></li>
+    <li><code>cd hair</code></li>
+    <li><code>rustc src/main.rs -o hair</code></li>
+    <li>add <code>hair</code> to your <code>$PATH</code> variable</li>
     </ul>
     </details>
   </details>
 
 <details>
 <summary>
-Linux
+ &#8594; Linux
 </summary>
 Coming soon!
 </details>
@@ -69,7 +69,7 @@ Contributions are always welcome (though I suspect I will be the only one workin
 ## TODO
 - [ ] Add `-` commands to cli (like `-v` for version)
 - [ ] Make `-` commands reorderable
-- [ ] Add to package managers like `brew` and `cargo`
+- [ ] Add to package managers like `brew` and `cargo` (low priority while in alpha)
 - [ ] Add support for HTTP 1.1+ and HTTPS
 - [ ] Autocomplete
 - [ ] Colored output
