@@ -1,6 +1,11 @@
 use std::io::prelude::*;
 use std::net::TcpStream;
 
+pub struct Url {
+    pub host: String,
+    pub path: String,
+}
+
 pub struct Response {
     pub headers: String,
     pub body: String,
@@ -8,8 +13,7 @@ pub struct Response {
 
 pub struct Request {
     pub method: String,
-    pub path: String,
-    pub host: String,
+    pub url: Url,
 }
 
 pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> String {
@@ -17,7 +21,7 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Strin
 
     let send_request = format!(
         "{} {} HTTP/1.0\r\nAccept: */*\r\nHost: {}\r\nUser-Agent: {}\r\n\r\n",
-        request.method, request.path, request.host, user_agent
+        request.method, request.url.path, request.url.host, user_agent
     );
 
     stream.write(send_request.as_bytes()).unwrap();
