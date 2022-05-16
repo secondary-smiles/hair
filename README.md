@@ -1,3 +1,6 @@
+<br/>
+    <img height="100" alt="Hair Banner" src="TODO" />
+</br>
 # Hair
 
 <!-- SHIELDS BEGIN -->
