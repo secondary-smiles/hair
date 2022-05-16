@@ -12,7 +12,46 @@
 ![GitHub license](https://img.shields.io/github/license/secondary-smiles/hair?style=flat-square)
 <!-- SHIELDS END -->
 
-Hair is a stupid, simple, and small HTTP command-line client made in Rust.
+**Hair is a stupid, simple, and small HTTP command-line client made in Rust.**
+
+## Instalation
+  <details>
+  <summary>
+    MacOS
+  </summary>
+    <details>
+        <summary>
+            From releases
+        </summary>
+        <ul>
+        <li> Go to the latest release </li>
+        <li> Download the correct build for your system </li>
+        <li> Rename the executable to hair with <code> mv DOWNLOADED_EXECUTABLE hair </code> </li>
+        <li> Add the executable to your <code>$PATH</code> variable</li>
+        </ul>
+    </details>
+    <details>
+    <summary>
+        From source
+    </summary>
+    Makefile coming soon!
+    With <code>rustc</code>
+    <ul>
+    <li><code>$ git clone https://github.com/secondary-smiles/hair.git</code></li>
+    <li><code>$ cd hair</code></li>
+    <li><code>$ rustc src/main.rs -o hair</code></li>
+    <li>add <code>hair</code> to your <code>$PATH</code></li>
+    </ul>
+    </details>
+  </details>
+
+<details>
+<summary>
+Linux
+</summary>
+Coming soon!
+</details>
+
 
 ## Usage
 In its current version hair has very strict syntax rules. Note that this will change in the future.
