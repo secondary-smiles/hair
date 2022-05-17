@@ -1,22 +1,9 @@
 use std::io::prelude::*;
 use std::net::TcpStream;
 
+use super::struct_lib::{ Request, Response };
+
 pub const VERSION: &'static str = "0.1.1";
-
-pub struct Url {
-    pub host: String,
-    pub path: String,
-}
-
-pub struct Response {
-    pub headers: String,
-    pub body: String,
-}
-
-pub struct Request {
-    pub method: String,
-    pub url: Url,
-}
 
 pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> String {
     let user_agent: String = format!("hair/{}", VERSION);

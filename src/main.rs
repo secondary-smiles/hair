@@ -1,9 +1,11 @@
 // Other files
 mod tcp_lib;
 mod cli_lib;
+mod struct_lib;
 
 // Local dependencies
-use tcp_lib::{parse_request, send_request_and_recv, Request};
+use struct_lib::{ Request };
+use tcp_lib::{parse_request, send_request_and_recv };
 use cli_lib:: { parse_args };
 
 // Dependencies

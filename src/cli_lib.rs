@@ -1,4 +1,4 @@
-use super::tcp_lib::{Request, Url};
+use super::struct_lib::{Request, Url};
 
 pub fn parse_args(args: &mut Vec<String>) -> Result<Request, String> {
     if args.len() != 3 {
