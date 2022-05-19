@@ -4,13 +4,13 @@ all:
 	@make clean
 	@mkdir -p target_build
 
-	@echo "Expected output:" >> target_build/target_build.log
+	@echo "\n\nExpected output $(NOW):" >> target_build/target_build.log
 	@echo "[+] Successfully created target_build directory" >> target_build/target_build.log
 	@echo "[+] Successfully compiled Hair" >> target_build/target_build.log
 	@echo "[+] Successfully added executable permissions" >> target_build/target_build.log
 
 	@echo "target_building Hair..."
-	@echo "\n\nBuild output:" >> target_build/target_build.log
+	@echo "\n\nBuild output $(NOW):" >> target_build/target_build.log
 	@echo "[+] Successfully created target_build directory" >> target_build/target_build.log
 	@rustc -o target_build/main hair/src/main.rs
 	@echo "[+] Successfully compiled Hair" >> target_build/target_build.log
@@ -35,19 +35,19 @@ reset:
 	@echo "target_build directory reset!"
 
 install:
-	@echo "\n\n[+] Install Logs:" >> target_build/target_build.log
+	@echo "\n\n Install Log $(NOW):" >> target_build/target_build.log
 	@sudo install target_build/main /usr/local/bin/hair
 	@echo "Successfully copied executable to /usr/local/bin"
 	@echo "[+] Successfully copied executable to /usr/local/bin" >> target_build/target_build.log
 
 uninstall:
-	@echo "\n\n[+] Uninstall Logs:" >> target_build/target_build.log
+	@echo "\n\n Uninstall Log $(NOW):" >> target_build/target_build.log
 	@sudo rm /usr/local/bin/hair
 	@echo "Successfully removed executable from /usr/local/bin"
 	@echo "[+] Successfully removed executable from /usr/local/bin" >> target_build/target_build.log
 
 update:
-	@echo "\n\n[+] Update Log:" >> target_build/target_build.log
+	@echo "\n\n Update Log $(NOW):" >> target_build/target_build.log
 	@echo "\n\n[+] Updating.." >> target_build/target_build.log
 	@echo "Updating hair git repository..."
 	@git pull
