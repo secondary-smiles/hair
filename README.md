@@ -1,5 +1,5 @@
 <br/>
-    <img alt="Hair Banner" height="200" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/front/Hair-Banner.png" />
+    <img alt="Hair Banner" height="200" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Banner.png" />
 </br>
 
 # Hair
