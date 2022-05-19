@@ -15,53 +15,40 @@
 **Hair is a stupid, simple, and small HTTP command-line client made in Rust.**
 
 ## Instalation
-  <details>
-  <summary>
-   &#8594; MacOS
-  </summary>
-    <details>
-        <summary>
-           &#8594; From releases
-        </summary>
-        <ul>
-        <li> Go to the latest release </li>
-        <li> Download the correct build for your system </li>
-        <li> Rename the executable to hair with <code> mv DOWNLOADED_EXECUTABLE hair </code> </li>
-        <li> Add the executable to your <code>$PATH</code> variable</li>
-        </ul>
-    </details>
-    <details>
-    <summary>
-       &#8594; From source
-    </summary>
-    &#8594; Makefile coming soon!
-    With <code>rustc</code>
-    <ul>
-    <li><code>git clone https://github.com/secondary-smiles/hair.git</code></li>
-    <li><code>cd hair</code></li>
-    <li><code>rustc src/main.rs -o hair</code></li>
-    <li>add <code>hair</code> to your <code>$PATH</code> variable</li>
-    </ul>
-    </details>
-  </details>
+``` bash
+$ git clone https://github.com/secondary-smiles/hair.git
+$ cd hair
+$ make
+$ make install
+```
+### A small guide to the Makefile
+`$ make` -- compiles the program, writes log files and backs up existing log files
 
-<details>
-<summary>
- &#8594; Linux
-</summary>
-Coming soon!
-</details>
+`$ make clean` -- backs up the log files and cleans everything else up
 
+`$ make install` -- installs the program to /usr/local/bin
+
+`$ make uninstall` -- removes the program from /usr/local/bin
+
+`$ make reset` -- removes the log files and the program from /usr/local/bin
 
 ## Usage
-In its current version hair has very strict syntax rules. Note that this will change in the future.
-
 ```bash
 $ hair <METHOD> <URL>
 ```
+
+In its current version hair has only two options: `<METHOD>` and `<URL>`.
+
 `METHOD` can be GET, POST, PUT, DELETE, etc. Right now there is no checking on this so honestly anything will be sent as typed.
 
 `URL` is the url you want to send the request to. It can be passed as it would be in a browser, it's automatically parsed and split.
+
+**Note that `<METHOD>` and `<URL>` are reorderable**
+
+### Example:
+```bash
+$ hair GET httpbin.org/get
+```
 
 ## Contributing
 Contributions are always welcome (though I suspect I will be the only one working on this project :P). Feel free to open an issue or even create a pull request on github. (Please make sure it compiles before you submit a PR).
