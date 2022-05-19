@@ -32,6 +32,8 @@ $ make install
 
 `$ make reset` -- removes the log files and the program from /usr/local/bin
 
+`$ make update` -- update from github and install the program using make and make install
+
 ## Usage
 ```bash
 $ hair <METHOD> <URL>
