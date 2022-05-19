@@ -1,17 +1,29 @@
 use std::io::prelude::*;
 use std::net::TcpStream;
 
-use super::struct_lib::{ Request, Response };
+use super::struct_lib::{Request, Response};
 
 pub const VERSION: &'static str = "0.1.2";
+
+pub fn connect_stream(host: &str) -> TcpStream {
+    let mut stream = TcpStream::connect(format!("{}:80", host)).expect("Could not connect to server");
+    stream.flush().unwrap();
+    stream
+}
 
 pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> String {
     let user_agent: String = format!("hair/{}", VERSION);
 
     let send_request = format!(
+        // Request: GET, Path-as-parsed, HTTP/1.1, Accept: */* Host: Host-as-parsed User-Agent: hair/0.1.1
         "{} {} HTTP/1.0\r\nAccept: */*\r\nHost: {}\r\nUser-Agent: {}\r\n\r\n",
-        request.method, request.url.path, request.url.host, user_agent
+        request.method.as_ref().unwrap_or(&"GET".to_string()),
+        request.url.path,
+        request.url.host,
+        user_agent
     );
+
+    println!("{}", send_request);
 
     stream.write(send_request.as_bytes()).unwrap();
 
