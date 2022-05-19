@@ -9,6 +9,22 @@ pub struct Response {
 }
 
 pub struct Request {
-    pub method: String,
+    pub method: Option<String>,
     pub url: Url,
+}
+
+impl std::fmt::Debug for Url {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Url {{ host: {}, path: {} }}", self.host, self.path)
+    }
+}
+
+impl std::fmt::Debug for Request {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(
+            f,
+            "Request {{ method: {:?}, url: {:?} }}",
+            self.method, self.url
+        )
+    }
 }
