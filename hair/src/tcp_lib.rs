@@ -3,7 +3,7 @@ use std::net::TcpStream;
 
 use super::struct_lib::{ Request, Response };
 
-pub const VERSION: &'static str = "0.1.1";
+pub const VERSION: &'static str = "0.1.2";
 
 pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> String {
     let user_agent: String = format!("hair/{}", VERSION);

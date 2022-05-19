@@ -68,7 +68,7 @@ Contributions are always welcome (though I suspect I will be the only one workin
 
 ## TODO
 - [ ] Add `-` commands to cli (like `-v` for version)
-- [ ] Make `-` commands reorderable
+- [X] Make commands reorderable
 - [ ] Add to package managers like `brew` and `cargo` (low priority while in alpha)
 - [ ] Add support for HTTP 1.1+ and HTTPS
 - [ ] Autocomplete
