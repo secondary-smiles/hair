@@ -16,27 +16,27 @@
 
 ## Installation
 ``` bash
-$ git clone https://github.com/secondary-smiles/hair.git
-$ cd hair
-$ make
-$ make install
+git clone https://github.com/secondary-smiles/hair.git
+cd hair
+make
+make install
 ```
 ### A small guide to the Makefile
-`$ make` -- compiles the program, writes log files and backs up existing log files
+`make` -- compiles the program, writes log files and backs up existing log files
 
-`$ make clean` -- backs up the log files and cleans everything else up
+`make clean` -- backs up the log files and cleans everything else up
 
-`$ make install` -- installs the program to /usr/local/bin
+`make install` -- installs the program to /usr/local/bin
 
-`$ make uninstall` -- removes the program from /usr/local/bin
+`make uninstall` -- removes the program from /usr/local/bin
 
-`$ make reset` -- removes the log files and the program from /usr/local/bin
+`make reset` -- removes the log files and the program from /usr/local/bin
 
-`$ make update` -- update from github and install the program using make and make install
+`make update` -- update from github and install the program using make and make install
 
 ## Usage
 ```bash
-$ hair <METHOD> <URL>
+hair <METHOD> <URL>
 ```
 
 In its current version hair has only two options: `<METHOD>` and `<URL>`.
@@ -49,7 +49,7 @@ In its current version hair has only two options: `<METHOD>` and `<URL>`.
 
 ### Example:
 ```bash
-$ hair GET httpbin.org/get
+hair GET httpbin.org/get
 ```
 
 ## Contributing
