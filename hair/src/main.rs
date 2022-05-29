@@ -2,6 +2,8 @@
 mod tcp_lib;
 mod parse;
 mod struct_lib;
+mod args_lib;
+mod cli_lib;
 
 // Local dependencies
 use parse::{ parse_args };

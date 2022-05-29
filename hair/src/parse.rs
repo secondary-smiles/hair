@@ -1,3 +1,4 @@
+use super::args_lib::{list_commands, run_command};
 use super::struct_lib::{Request, Url};
 
 pub fn parse_args(args: Vec<String>) -> Result<Request, &'static str> {
@@ -8,15 +9,17 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, &'static str> {
     let mut method: Option<String> = None;
     for arg in args {
         if arg.starts_with("-") {
-            // TODO: Parse `-` args
-            return Err("Sorry, `-` args are not yet supported.");
+            for command in list_commands() {
+                if arg.replace("-", "") == command.short.unwrap().to_string() || arg.replace("-", "") == command.long.unwrap().to_string() {
+                    run_command(&command.name);
+                }
+            }
         } else if arg.starts_with("http") || arg.contains(".") && !arg.contains(" ") {
             url = parse_url(&arg).unwrap();
         } else if arg.to_uppercase() == arg {
             method = Some(arg.to_string());
         }
     }
-
 
     Ok(Request {
         method: method,
