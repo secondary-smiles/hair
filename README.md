@@ -56,7 +56,7 @@ hair GET httpbin.org/get
 Contributions are always welcome (though I suspect I will be the only one working on this project :P). Feel free to open an issue or even create a pull request on github. (Please make sure it compiles before you submit a PR).
 
 ## TODO
-- [ ] Add `-` commands to cli (like `-v` for version)
+- [X] Add `-` commands to cli (like `-v` for version)
 - [X] Make commands reorderable
 - [ ] Add to package managers like `brew` and `cargo` (low priority while in alpha)
 - [ ] Add support for HTTP 1.1+ and HTTPS
