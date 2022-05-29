@@ -7,7 +7,7 @@ pub struct Version {
 
 impl Run for Version {
     fn run(&self) {
-        println!("Hair -- version 0.1.2");
+        println!("Hair -- version 0.1.3");
         std::process::exit(0);
     }
 }
