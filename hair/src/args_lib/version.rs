@@ -17,7 +17,7 @@ pub static COMMAND: Version = Version {
         name: "Version",
         short: Some('v'),
         long: Some("version"), 
-        help: "Print current program version",
+        help: "Print the current program version",
     },
     can_run: true,
 };

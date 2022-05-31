@@ -36,6 +36,7 @@ make install
 
 ## Usage
 ```bash
+hair -h
 hair <METHOD> <URL>
 ```
 
