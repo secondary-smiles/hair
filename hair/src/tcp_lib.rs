@@ -2,8 +2,7 @@ use std::io::prelude::*;
 use std::net::TcpStream;
 
 use super::struct_lib::{Request, Response};
-
-pub const VERSION: &'static str = "0.1.3";
+use super::cli_lib::{VERSION};
 
 pub fn connect_stream(host: &str) -> TcpStream {
     let mut stream = TcpStream::connect(format!("{}:80", host)).expect("Could not connect to server");

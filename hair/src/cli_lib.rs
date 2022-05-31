@@ -1,3 +1,5 @@
+pub const VERSION: &'static str = "0.1.3";
+
 pub struct Arg {
     pub name: &'static str,
     pub short: Option<char>,

@@ -1,9 +1,8 @@
-use super::super::cli_lib::{ Arg, Run };
+use super::super::cli_lib::{Arg, Run};
 use super::list_commands;
 
 pub struct Help {
     pub arg: Arg,
-    pub was_run: bool,
 }
 
 impl Run for Help {
@@ -37,5 +36,4 @@ pub static COMMAND: Help = Help {
         long: Some("help"),
         help: "Print the help message",
     },
-    was_run: true,
 };

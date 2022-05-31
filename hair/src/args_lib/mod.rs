@@ -1,7 +1,7 @@
 pub mod help;
 pub mod version;
 
-use super::cli_lib::{ Arg, Run };
+use super::cli_lib::{Arg, Run};
 
 pub fn list_commands() -> Vec<Arg> {
     vec![

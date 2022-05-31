@@ -6,8 +6,8 @@ mod args_lib;
 mod cli_lib;
 
 // Local dependencies
-use parse::{ parse_args };
-use struct_lib::{ Request };
+use parse::{parse_args};
+use struct_lib::{Request};
 use tcp_lib::{parse_request, send_request_and_recv, connect_stream };
 
 
