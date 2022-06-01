@@ -1,4 +1,4 @@
-pub const VERSION: &'static str = "0.1.3";
+pub const VERSION: &'static str = "0.1.4";
 
 pub struct Arg {
     pub name: &'static str,
