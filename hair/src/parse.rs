@@ -9,10 +9,23 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, &'static str> {
     let mut method: Option<String> = None;
     for arg in args {
         if arg.starts_with("-") {
+            let mut has_run: bool = false;
             for command in list_commands() {
-                if arg.replace("-", "") == command.short.unwrap().to_string() || arg.replace("-", "") == command.long.unwrap().to_string() {
+                let short = match command.short {
+                    Some(s) => format!("-{}", s),
+                    None => continue,
+                };
+                let long = match command.long {
+                    Some(l) => format!("--{}", l),
+                    None => continue,
+                };
+                if arg == short || arg == long {
                     run_command(&command.name);
+                    has_run = true;
                 }
+            }
+            if has_run == false {
+                return Err("Invalid command");
             }
         } else if arg.starts_with("http") || arg.contains(".") && !arg.contains(" ") {
             url = parse_url(&arg).unwrap();
