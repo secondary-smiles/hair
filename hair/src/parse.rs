@@ -7,17 +7,20 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, &'static str> {
         path: String::new(),
     };
     let mut method: Option<String> = None;
+    if args.len() < 2 {
+        return Err("Not enough arguments");
+    }
     for arg in args {
         if arg.starts_with("-") {
             let mut has_run: bool = false;
             for command in list_commands() {
                 let short = match command.short {
                     Some(s) => format!("-{}", s),
-                    None => continue,
+                    None => "".to_string(),
                 };
                 let long = match command.long {
                     Some(l) => format!("--{}", l),
-                    None => continue,
+                    None => "".to_string(),
                 };
                 if arg == short || arg == long {
                     run_command(&command.name);

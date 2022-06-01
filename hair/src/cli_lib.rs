@@ -7,9 +7,10 @@ pub struct Arg {
     pub help: &'static str,
 }
 
-
-pub trait Run {
-    fn run(&self);
+impl std::fmt::Debug for Arg {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+        write!(f, "Arg {{ name: {}, short: {:?}, long: {:?}, help: {} }}", self.name, self.short, self.long, self.help)
+    }
 }
 
 impl Copy for Arg { }

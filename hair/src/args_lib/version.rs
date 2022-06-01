@@ -1,21 +1,11 @@
-use super::super::cli_lib::{Arg, Run, VERSION};
+use super::super::cli_lib::{VERSION};
 
-pub struct Version {
-    pub arg: Arg,
+pub const NAME: &'static str = "Version";
+pub const SHORT: Option<char> = Some('v');
+pub const LONG: Option<&'static str> = Some("version");
+pub const HELP: &'static str = "Print the current program version";
+
+pub fn run() {
+    println!("Hair -- version {}", VERSION);
+    std::process::exit(0);
 }
-
-impl Run for Version {
-    fn run(&self) {
-        println!("Hair -- version {}", VERSION);
-        std::process::exit(0);
-    }
-}
-
-pub static COMMAND: Version = Version {
-    arg: Arg {
-        name: "Version",
-        short: Some('v'),
-        long: Some("version"), 
-        help: "Print the current program version",
-    },
-};

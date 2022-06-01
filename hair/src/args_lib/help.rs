@@ -1,39 +1,28 @@
-use super::super::cli_lib::{Arg, Run};
 use super::list_commands;
 
-pub struct Help {
-    pub arg: Arg,
-}
+pub const NAME: &'static str = "Help";
+pub const SHORT: Option<char> = Some('h');
+pub const LONG: Option<&'static str> = Some("help");
+pub const HELP: &'static str = "Print the help message";
 
-impl Run for Help {
-    fn run(&self) {
-        for arg in list_commands() {
-            let short = match arg.short {
-                Some(short) => format!("-{}", short),
-                None => "".to_string(),
-            };
+pub fn run() {
+    for command in list_commands() {
+        let arg_short = match command.short {
+            Some(s) => format!("-{}", s),
+            None => "".to_string(),
+        };
 
-            let long = match arg.long {
-                Some(long) => format!("--{}", long),
-                None => "".to_string(),
-            };
-            let info_line;
-            if short != "" && long != "" {
-                info_line = format!("{}\t\t{}, {}\t{}", arg.name, short, long, arg.help);
-            } else {
-                info_line = format!("{}\t\t{}{}\t\t{}", arg.name, short, long, arg.help);
-            }
-            println!("{}", info_line);
+        let arg_long = match command.long {
+            Some(l) => format!("--{}", l),
+            None => "".to_string(),
+        };
+        let info_line;
+        if arg_short != "" && arg_long != "" {
+            info_line = format!("{}\t\t{}, {}\t{}", command.name, arg_short, arg_long, command.help);
+        } else {
+            info_line = format!("{}\t\t{}{}\t\t{}", command.name, arg_short, arg_long, command.help);
         }
-        std::process::exit(0);
+        println!("{}", info_line);
     }
+    std::process::exit(0);
 }
-
-pub static COMMAND: Help = Help {
-    arg: Arg {
-        name: "Help",
-        short: Some('h'),
-        long: Some("help"),
-        help: "Print the help message",
-    },
-};
