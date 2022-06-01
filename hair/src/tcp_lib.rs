@@ -1,11 +1,12 @@
 use std::io::prelude::*;
 use std::net::TcpStream;
 
+use super::cli_lib::VERSION;
 use super::struct_lib::{Request, Response};
-use super::cli_lib::{VERSION};
 
 pub fn connect_stream(host: &str) -> TcpStream {
-    let mut stream = TcpStream::connect(format!("{}:80", host)).expect("Could not connect to server");
+    let mut stream =
+        TcpStream::connect(format!("{}:80", host)).expect("Could not connect to server");
     stream.flush().unwrap();
     stream
 }
@@ -22,7 +23,15 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Strin
         user_agent
     );
 
-    println!("{}", send_request);
+    
+    let print_verbose = std::env::var("PRINT_VERBOSE")
+    .unwrap()
+    .parse::<i32>()
+    .unwrap();
+    
+    if print_verbose == 1 {
+        println!("{}", send_request);
+    }
 
     stream.write(send_request.as_bytes()).unwrap();
 
