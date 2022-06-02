@@ -14,5 +14,4 @@ pub fn run() {
         _ => 0,
     };
     std::env::set_var("PRINT_VERBOSE", print_verbose.to_string());
-    println!("{}", print_verbose);
 }
