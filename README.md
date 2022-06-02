@@ -12,7 +12,8 @@
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/secondary-smiles/hair)](https://github.com/secondary-smiles/hair)
 [![GitHub Repo stars](https://img.shields.io/github/stars/secondary-smiles/hair?color=yellow&logo=GitHub)](https://github.com/secondary-smiles/hair/stargazers)
 [![GitHub license](https://img.shields.io/github/license/secondary-smiles/hair)](https://github.com/secondary-smiles/hair/blob/master/LICENSE.txt)
-[![Build status](https://github.com/secondary-smiles/hair/actions/workflows/rust.yml/badge.svg)](https://github.com/secondary-smiles/hair/actions)
+[![Build status rust](https://github.com/secondary-smiles/hair/actions/workflows/rust.yml/badge.svg)](https://github.com/secondary-smiles/hair/actions/workflows/rust.yml)
+[![Build status makefile](https://github.com/secondary-smiles/hair/actions/workflows/makefile.yml/badge.svg)](https://github.com/secondary-smiles/hair/actions/workflows/makefile.yml)
 <!-- SHIELDS END -->
 
 **Hair is a stupid, simple, and small HTTP command-line client made in Rust.**
