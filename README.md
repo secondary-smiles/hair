@@ -5,11 +5,11 @@
 # Hair
 
 <!-- SHIELDS BEGIN -->
-![GitHub all releases](https://img.shields.io/github/downloads/secondary-smiles/hair/total?logo=GitHub&style=flat-square)
-![GitHub issues](https://img.shields.io/github/issues/secondary-smiles/hair?logo=GitHub&style=flat-square)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/secondary-smiles/hair?style=flat-square)
-![GitHub Repo stars](https://img.shields.io/github/stars/secondary-smiles/hair?color=yellow&logo=GitHub&style=flat-square)
-![GitHub license](https://img.shields.io/github/license/secondary-smiles/hair?style=flat-square)
+[![GitHub all releases](https://img.shields.io/github/downloads/secondary-smiles/hair/total?logo=GitHub&style=flat-square)](https://github.com/secondary-smiles/hair)
+[![GitHub issues](https://img.shields.io/github/issues/secondary-smiles/hair?logo=GitHub&style=flat-square)](https://github.com/secondary-smiles/hair)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/secondary-smiles/hair?style=flat-square)](https://github.com/secondary-smiles/hair)
+[![GitHub Repo stars](https://img.shields.io/github/stars/secondary-smiles/hair?color=yellow&logo=GitHub&style=flat-square)](https://github.com/secondary-smiles/hair)
+[![GitHub license](https://img.shields.io/github/license/secondary-smiles/hair?style=flat-square)](https://github.com/secondary-smiles/hair)
 <!-- SHIELDS END -->
 
 **Hair is a stupid, simple, and small HTTP command-line client made in Rust.**
