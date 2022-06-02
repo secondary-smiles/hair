@@ -11,6 +11,7 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
         println!("Error: No arguments provided\n");
         run_command("Help");
     }
+    let mut url_provided = false;
     for arg in args {
         if arg.starts_with("-") {
             let mut has_run: bool = false;
@@ -33,9 +34,14 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
             }
         } else if arg.starts_with("http") || arg.contains(".") && !arg.contains(" ") {
             url = parse_url(&arg).unwrap();
+            url_provided = true;
         } else if arg.to_uppercase() == arg {
             method = Some(arg.to_string());
         }
+    }
+    
+    if url_provided == false {
+        return Err("No URL provided".to_string());
     }
 
     Ok(Request {
