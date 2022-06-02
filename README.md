@@ -63,12 +63,12 @@ Contributions are always welcome (though I suspect I will be the only one workin
 ## TODO
 - [X] Add `-` commands to cli (like `-v` for version)
 - [X] Make commands reorderable
-- [ ] Add to package managers like `brew` and `cargo` (low priority while in alpha)
-- [ ] Add support for HTTP 1.1+ and HTTPS
+- [X] Graceful error handling
 - [ ] Autocomplete
 - [ ] Colored output
-- [ ] Graceful error handling
 - [ ] Create a website for hair
 - [ ] Add many many features like output files, file uploads, color themes, etc.
 - [ ] Add optional auto redirect for 301, 302, etc.
 - [ ] Be even more awesome (general improvement)
+- [ ] Add support for HTTP 1.1+ and HTTPS
+- [ ] Add to package managers like `brew` and `cargo` (low priority while in alpha)

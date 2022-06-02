@@ -1,13 +1,14 @@
 use super::args_lib::{list_commands, run_command};
 use super::struct_lib::{Request, Url};
 
-pub fn parse_args(args: Vec<String>) -> Result<Request, &'static str> {
+pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
     let mut url: Url = Url {
         host: String::new(),
         path: String::new(),
     };
     let mut method: Option<String> = None;
     if args.len() < 2 {
+        println!("Error: No arguments provided\n");
         run_command("Help");
     }
     for arg in args {
@@ -28,7 +29,7 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, &'static str> {
                 }
             }
             if has_run == false {
-                return Err("Invalid command");
+                return Err(format!("Invalid command: {:?}", arg));
             }
         } else if arg.starts_with("http") || arg.contains(".") && !arg.contains(" ") {
             url = parse_url(&arg).unwrap();
