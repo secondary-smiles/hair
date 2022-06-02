@@ -1,0 +1,27 @@
+name: Makefile CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      
+    - name: Compile Hair
+      run: make
+      
+    - name: Install Hair
+      run: make install
+      
+    - name: Test binary
+      run: hair --help
+      
+    - name: Uninstall Hair
+      run: make uninstall
