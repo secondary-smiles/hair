@@ -27,7 +27,7 @@ fn main() {
                     path: "".to_string(),
                 },
             };
-            error(e, 1);
+            error(&e.to_string(), 1);
         }
     }
 
@@ -38,7 +38,10 @@ fn main() {
 
     println!("{}{}", response.headers, response.body);
 
-    stream.flush().unwrap();
+    match stream.flush() {
+        Ok(_) => (),
+        Err(e) => error(&e.to_string(), 1),
+    }
 }
 
 fn init_env() {

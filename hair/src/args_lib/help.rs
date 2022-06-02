@@ -21,7 +21,7 @@ pub fn run() {
         };
         let info_line;
         if arg_short != "" && arg_long != "" {
-            info_line = format!("\t{}\t\t{}, {}\t{}", command.name, arg_short, arg_long, command.help);
+            info_line = format!("\t{}\t\t{}, {}\t\t{}", command.name, arg_short, arg_long, command.help);
         } else {
             info_line = format!("\t{}\t\t{}{}\t\t{}", command.name, arg_short, arg_long, command.help);
         }

@@ -3,11 +3,21 @@ use std::net::TcpStream;
 
 use super::cli_lib::VERSION;
 use super::struct_lib::{Request, Response};
+use super::fn_lib::{error};
 
 pub fn connect_stream(host: &str) -> TcpStream {
-    let mut stream =
-        TcpStream::connect(format!("{}:80", host)).expect("Could not connect to server");
-    stream.flush().unwrap();
+    let mut stream: TcpStream;
+    match TcpStream::connect(format!("{}:80", host)) {
+        Ok(s) => stream = s,
+        Err(e) =>{ 
+            error(&e.to_string(), 1);
+            stream = TcpStream::connect(format!("{}:80", host)).unwrap();
+        },
+    }
+    match stream.flush() {
+        Ok(_) => (),
+        Err(e) => error(&e.to_string(), 1),
+    }
     stream
 }
 
@@ -23,23 +33,35 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Strin
         user_agent
     );
 
+    let print_verbose = match std::env::var("HAIR_PRINT_VERBOSE") {
+        Ok(v) => v,
+        Err(_) => {
+            let msg = "Could not find ENV variable".to_string();
+            error(&msg, 1);
+            "0".to_string()
+        },
+    };
     
-    let print_verbose = std::env::var("HAIR_PRINT_VERBOSE")
-    .unwrap()
-    .parse::<i32>()
-    .unwrap();
-    
-    if print_verbose == 1 {
+    if print_verbose == '1'.to_string() {
         println!("{}", send_request);
     }
 
-    stream.write(send_request.as_bytes()).unwrap();
+    match stream.write(send_request.as_bytes()) {
+        Ok(_) => (),
+        Err(e) => error(&e.to_string(), 1),
+    }
 
     let mut data = Vec::new();
     let mut buffer = [0; 1024];
 
     loop {
-        let bytes_read = stream.read(&mut buffer).unwrap();
+        let bytes_read = match stream.read(&mut buffer) {
+            Ok(b) => b,
+            Err(e) => {
+                error(&e.to_string(), 1);
+                0
+            },
+        };
         if bytes_read == 0 {
             break;
         }
