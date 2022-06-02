@@ -1,5 +1,7 @@
 <br/>
+    <a href="https://github.com/secondary-smiles/hair">
     <img alt="Hair Banner" height="200" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Banner.png" />
+    </a>
 </br>
 
 # Hair
