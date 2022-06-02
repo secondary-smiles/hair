@@ -36,6 +36,14 @@ fn main() {
     let raw_data = send_request_and_recv(&mut stream, &request);
     let response = parse_request(raw_data);
 
+    let print_verbose = match std::env::var("HAIR_PRINT_VERBOSE") {
+        Ok(v) => v,
+        Err(_) => {
+            let msg = "Could not find ENV variable".to_string();
+            error(&msg, 1);
+            "0".to_string()
+        },
+    };
     
     let print_body = match std::env::var("HAIR_PRINT_BODY") {
         Ok(v) => v,
@@ -54,17 +62,18 @@ fn main() {
             "0".to_string()
         },
     };
+
     
     
-    if print_headers == '1'.to_string() {
+    if print_headers == '1'.to_string() && print_verbose != '1'.to_string() {
         println!("{}", response.headers);
     }
     
-    if print_body == '1'.to_string() {
+    if print_body == '1'.to_string() && print_verbose != '1'.to_string() {
         println!("{}", response.body);
     }
 
-    if print_body != '1'.to_string() && print_headers != '1'.to_string() {
+    if print_body != '1'.to_string() && print_headers != '1'.to_string() || print_verbose == '1'.to_string(){
         println!("{}{}", response.headers, response.body);
     }
     
