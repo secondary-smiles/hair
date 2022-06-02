@@ -1,6 +1,8 @@
-pub mod help;
-pub mod version;
-pub mod verbose;
+mod help;
+mod version;
+mod verbose;
+mod body;
+mod headers;
 
 use super::cli_lib::{Arg};
 
@@ -24,6 +26,18 @@ pub fn list_commands() -> Vec<Arg> {
             long: verbose:: LONG,
             help: verbose:: HELP,
         },
+        Arg {
+            name: body:: NAME,
+            short: body::SHORT,
+            long: body:: LONG,
+            help: body:: HELP,
+        },
+        Arg {
+            name: headers:: NAME,
+            short: headers::SHORT,
+            long: headers:: LONG,
+            help: headers:: HELP,
+        },
     ];
     commands
 }
@@ -33,6 +47,8 @@ pub fn run_command(arg: &str) {
         "Help" => help::run(),
         "Version" => version::run(),
         "Verbose" => verbose::run(),
+        "Body" => body::run(),
+        "Headers" => headers::run(),
         _ => help::run(),
     }
 }

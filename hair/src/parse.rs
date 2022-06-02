@@ -30,6 +30,9 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
                 }
             }
             if has_run == false {
+                has_run = parse_single_args(&arg);
+            }
+            if has_run == false {
                 return Err(format!("Invalid command: {:?}", arg));
             }
         } else if arg.starts_with("http") || arg.contains(".") && !arg.contains(" ") {
@@ -78,4 +81,22 @@ fn parse_url(url: &String) -> Result<Url, String> {
         host: host,
         path: path,
     })
+}
+
+
+fn parse_single_args(arg: &str) -> bool {
+    let mut has_run = false;
+    for a in arg.chars() {
+        for command in list_commands() {
+            let short = match command.short {
+                Some(s) => s,
+                None => ' ',
+            };
+            if short == a {
+                run_command(&command.name);
+                has_run = true;
+            }
+        }
+    }
+    has_run
 }
