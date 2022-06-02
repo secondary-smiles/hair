@@ -24,7 +24,7 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Strin
     );
 
     
-    let print_verbose = std::env::var("PRINT_VERBOSE")
+    let print_verbose = std::env::var("HAIR_PRINT_VERBOSE")
     .unwrap()
     .parse::<i32>()
     .unwrap();

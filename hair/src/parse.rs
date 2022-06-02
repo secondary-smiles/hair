@@ -8,7 +8,7 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, &'static str> {
     };
     let mut method: Option<String> = None;
     if args.len() < 2 {
-        return Err("Not enough arguments");
+        run_command("Help");
     }
     for arg in args {
         if arg.starts_with("-") {
