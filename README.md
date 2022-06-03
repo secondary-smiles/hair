@@ -7,6 +7,7 @@
 # Hair
 
 <!-- SHIELDS BEGIN -->
+
 [![GitHub all releases](https://img.shields.io/github/downloads/secondary-smiles/hair/total?logo=GitHub)](https://github.com/secondary-smiles/hair/releases)
 [![GitHub issues](https://img.shields.io/github/issues/secondary-smiles/hair?logo=GitHub)](https://github.com/secondary-smiles/hair/issues)
 [![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/secondary-smiles/hair)](https://github.com/secondary-smiles/hair)
@@ -14,18 +15,26 @@
 [![GitHub license](https://img.shields.io/github/license/secondary-smiles/hair)](https://github.com/secondary-smiles/hair/blob/master/LICENSE.txt)
 [![Build status rust](https://github.com/secondary-smiles/hair/actions/workflows/rust.yml/badge.svg)](https://github.com/secondary-smiles/hair/actions/workflows/rust.yml)
 [![Build status makefile](https://github.com/secondary-smiles/hair/actions/workflows/makefile.yml/badge.svg)](https://github.com/secondary-smiles/hair/actions/workflows/makefile.yml)
+
 <!-- SHIELDS END -->
 
 **Hair is a stupid, simple, and small HTTP command-line client made in Rust.**
 
+<a href="https://github.com/secondary-smiles/hair">
+    <img alt="Hair Demo" width="349" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Demo.gif" />
+</a>
+
 ## Installation
-``` bash
+
+```bash
 git clone https://github.com/secondary-smiles/hair.git
 cd hair
 make
 make install
 ```
+
 ### A small guide to the Makefile
+
 `make` -- compiles the program, writes log files and backs up existing log files
 
 `make clean` -- backs up the log files and cleans everything else up
@@ -39,6 +48,7 @@ make install
 `make update` -- update from github and install the program using make and make install
 
 ## Usage
+
 ```bash
 hair -h
 hair <METHOD> <URL>
@@ -53,17 +63,19 @@ In its current version hair has only two options: `<METHOD>` and `<URL>`.
 **Note that `<METHOD>` and `<URL>` are reorderable**
 
 ### Example:
+
 ```bash
 hair GET httpbin.org/get
 ```
 
 ## Contributing
-Contributions are always welcome (though I suspect I will be the only one working on this project :P). Feel free to open an issue or even create a pull request on github. (Please make sure it compiles before you submit a PR).
+Contributions are always welcome (though I suspect I will be the only one working on this project :P). Feel free to open an issue or even create a pull request on github.
 
 ## TODO
-- [X] Add `-` commands to cli (like `-v` for version)
-- [X] Make commands reorderable
-- [X] Graceful error handling
+
+- [x] Add `-` commands to cli (like `-v` for version)
+- [x] Make commands reorderable
+- [x] Graceful error handling
 - [ ] Autocomplete
 - [ ] Colored output
 - [ ] Create a website for hair
