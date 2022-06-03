@@ -1,7 +1,5 @@
 <br/>
-    <a href="https://github.com/secondary-smiles/hair">
     <img alt="Hair Banner" height="200" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Banner.png" />
-    </a>
 </br>
 
 # Hair
@@ -20,9 +18,7 @@
 
 **Hair is a stupid, simple, and small HTTP command-line client made in Rust.**
 
-<a href="https://github.com/secondary-smiles/hair">
-    <img alt="Hair Demo" width="349" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Demo.gif" />
-</a>
+<img alt="Hair Demo" width="349" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Demo.gif" />
 
 ## Installation
 
