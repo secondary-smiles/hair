@@ -58,7 +58,7 @@ hair GET httpbin.org/get
 ```
 
 ## Contributing
-Contributions are always welcome (though I suspect I will be the only one working on this project :P). Feel free to open an issue or even create a pull request on github. (Please make sure it compiles before you submit a PR).
+Contributions are always welcome (though I suspect I will be the only one working on this project :P). Feel free to open an issue or even create a pull request on github.
 
 ## TODO
 - [X] Add `-` commands to cli (like `-v` for version)
