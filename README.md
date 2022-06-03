@@ -51,22 +51,26 @@ make install
 
 ```bash
 hair -h
-hair <METHOD> <URL>
+hair [OPTIONS] [method] URL
 ```
 
-In its current version hair has only two options: `<METHOD>` and `<URL>`.
-
-`METHOD` can be GET, POST, PUT, DELETE, etc. Right now there is no checking on this so honestly anything will be sent as typed.
+`method` can be GET, POST, PUT, DELETE, etc. It is the optional HTTP method to use. If not specified, the default method is GET.
 
 `URL` is the url you want to send the request to. It can be passed as it would be in a browser, it's automatically parsed and split.
 
-**Note that `<METHOD>` and `<URL>` are reorderable**
+**Note that `[method]` and `URL` are reorderable**
 
 ### Example:
 
 ```bash
 hair GET httpbin.org/get
 ```
+<sup>Print the server header and response from the url `httpbin.org/get`</sup>
+
+```bash
+hair -b httpbin.org/get
+```
+<sup>Print only the body of the response from the url `httpbin.org/get`</sup>
 
 ## Contributing
 Contributions are always welcome (though I suspect I will be the only one working on this project :P). Feel free to open an issue or even create a pull request on github.
