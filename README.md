@@ -17,9 +17,9 @@
 <!-- SHIELDS END -->
 
 **Hair is a stupid, simple, and small HTTP command-line client made in Rust.**
-
-<img alt="Hair Demo" width="349" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Demo.gif" />
-
+<br>
+    <img alt="Hair Demo" width="349" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Demo.gif" />
+</br>
 ## Installation
 
 ```bash
