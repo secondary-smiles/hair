@@ -5,6 +5,7 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
     let mut url: Url = Url {
         host: String::new(),
         path: String::new(),
+        port: None,
     };
     let mut method: Option<String> = None;
     if args.len() < 2 {
@@ -35,7 +36,7 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
             if has_run == false {
                 return Err(format!("Invalid command: {:?}", arg));
             }
-        } else if arg.starts_with("http") || arg.contains(".") && !arg.contains(" ") {
+        } else if arg.contains("://") || arg.contains(".") || arg.contains(":") && !arg.contains(" ") {
             url = parse_url(&arg).unwrap();
             url_provided = true;
         } else if arg.to_uppercase() == arg {
@@ -56,9 +57,10 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
 fn parse_url(url: &String) -> Result<Url, String> {
     let mut host;
     let path;
+    let port: Option<String>;
 
-    if url.split("//").collect::<Vec<&str>>().len() > 1 {
-        host = url.split("//").collect::<Vec<&str>>()[1].to_string();
+    if url.split("://").collect::<Vec<&str>>().len() > 1 {
+        host = url.split("://").collect::<Vec<&str>>()[1].to_string();
     } else {
         host = url.to_string();
     }
@@ -77,9 +79,25 @@ fn parse_url(url: &String) -> Result<Url, String> {
         path = "/".to_string();
     }
 
+    if host.split(":").collect::<Vec<&str>>().len() > 1 {
+        let port_opt = host.split(":").collect::<Vec<&str>>()[1].to_string().split("/").collect::<Vec<&str>>()[0].to_string();
+        if port_opt.parse::<u16>().is_ok() {
+            port = Some(port_opt);
+        } else {
+            return Err(format!("Invalid port: {}", port_opt));
+        } 
+    } else {
+        port = None;
+    }
+
+    if port != None {
+        host = host.split(":").collect::<Vec<&str>>()[0].to_string();
+    }
+
     Ok(Url {
         host: host,
         path: path,
+        port: port,
     })
 }
 

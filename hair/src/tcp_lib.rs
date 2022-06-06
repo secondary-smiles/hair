@@ -2,16 +2,16 @@ use std::io::prelude::*;
 use std::net::TcpStream;
 
 use super::cli_lib::VERSION;
-use super::struct_lib::{Request, Response};
-use super::fn_lib::{error};
+use super::struct_lib::{Request, Response, Url};
+use super::fn_lib::{error, fenv_var};
 
-pub fn connect_stream(host: &str) -> TcpStream {
+pub fn connect_stream(url: &Url) -> TcpStream {
     let mut stream: TcpStream;
-    match TcpStream::connect(format!("{}:80", host)) {
+    match TcpStream::connect(format!("{}:{}", url.host, url.port.clone().unwrap_or("80".to_string()))) {
         Ok(s) => stream = s,
         Err(e) =>{ 
             error(&e.to_string(), 1);
-            stream = TcpStream::connect(format!("{}:80", host)).unwrap();
+            stream = TcpStream::connect(format!("{}:80", url.host)).unwrap();
         },
     }
     match stream.flush() {
@@ -33,14 +33,7 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Strin
         user_agent
     );
 
-    let print_verbose = match std::env::var("HAIR_PRINT_VERBOSE") {
-        Ok(v) => v,
-        Err(_) => {
-            let msg = "Could not find ENV variable".to_string();
-            error(&msg, 1);
-            "0".to_string()
-        },
-    };
+    let print_verbose = fenv_var("HAIR_PRINT_VERBOSE");
     
     if print_verbose == '1'.to_string() {
         println!("{}", send_request);

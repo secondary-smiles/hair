@@ -5,7 +5,7 @@ mod parse;
 mod struct_lib;
 mod tcp_lib;
 
-use fn_lib::{error};
+use fn_lib::{error, fenv_var};
 use parse::{parse_args};
 use struct_lib::{Request, Url};
 use tcp_lib::{connect_stream, parse_request, send_request_and_recv};
@@ -25,43 +25,21 @@ fn main() {
                 url: Url {
                     host: "".to_string(),
                     path: "".to_string(),
+                    port: None,
                 },
             };
             error(&e.to_string(), 1);
         }
     }
 
-    let mut stream = connect_stream(&request.url.host);
+    let mut stream = connect_stream(&request.url);
 
     let raw_data = send_request_and_recv(&mut stream, &request);
     let response = parse_request(raw_data);
 
-    let print_verbose = match std::env::var("HAIR_PRINT_VERBOSE") {
-        Ok(v) => v,
-        Err(_) => {
-            let msg = "Could not find ENV variable".to_string();
-            error(&msg, 1);
-            "0".to_string()
-        },
-    };
-    
-    let print_body = match std::env::var("HAIR_PRINT_BODY") {
-        Ok(v) => v,
-        Err(_) => {
-            let msg = "Could not find ENV variable".to_string();
-            error(&msg, 1);
-            "0".to_string()
-        },
-    };
-
-    let print_headers = match std::env::var("HAIR_PRINT_HEADERS") {
-        Ok(v) => v,
-        Err(_) => {
-            let msg = "Could not find ENV variable".to_string();
-            error(&msg, 1);
-            "0".to_string()
-        },
-    };
+    let print_verbose = fenv_var("HAIR_PRINT_VERBOSE");
+    let print_body = fenv_var("HAIR_PRINT_BODY");
+    let print_headers = fenv_var("HAIR_PRINT_HEADERS");
 
     
     

@@ -1,6 +1,8 @@
+#[derive(Clone)]
 pub struct Url {
     pub host: String,
     pub path: String,
+    pub port: Option<String>,
 }
 
 pub struct Response {
