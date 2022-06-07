@@ -11,7 +11,7 @@ pub fn connect_stream(url: &Url) -> TcpStream {
         Ok(s) => stream = s,
         Err(e) =>{ 
             error(&e.to_string(), 1);
-            stream = TcpStream::connect(format!("{}:80", url.host)).unwrap();
+            stream = TcpStream::connect(format!("{}:{}", url.host, url.port.clone().unwrap_or("80".to_string()))).unwrap();
         },
     }
     match stream.flush() {
@@ -21,7 +21,7 @@ pub fn connect_stream(url: &Url) -> TcpStream {
     stream
 }
 
-pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> String {
+pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Response {
     let user_agent: String = format!("hair/{}", VERSION);
 
     let send_request = format!(
@@ -44,8 +44,20 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Strin
         Err(e) => error(&e.to_string(), 1),
     }
 
-    let mut data = Vec::new();
+    let mut data_buffer = Vec::new();
     let mut buffer = [0; 1024];
+    let mut header_buffer = [0; 8192];
+
+    match stream.read(&mut header_buffer) {
+        Ok(b) => b,
+        Err(e) => {
+            error(&e.to_string(), 1);
+            0
+        },
+    };
+
+    check_chunked_encoding(&header_buffer);
+    let first_response = true;
 
     loop {
         let bytes_read = match stream.read(&mut buffer) {
@@ -55,35 +67,44 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Strin
                 0
             },
         };
+        if first_response {
+            header_buffer.copy_from_slice(&buffer[..bytes_read]);
+        }
         if bytes_read == 0 {
             break;
         }
 
-        data.extend_from_slice(&buffer[..bytes_read]);
+        data_buffer.extend_from_slice(&buffer[..bytes_read]);
+        //println!("{}", String::from_utf8_lossy(&data));
     }
 
-    let data = String::from_utf8_lossy(&data);
+    //let data = String::from_utf8_lossy(&data);
 
-    return data.to_string();
+    return add_buffers_to_response(&header_buffer, &data_buffer);
+
+    //return parse_request(data.to_string());
 }
 
-pub fn parse_request(request: String) -> Response {
-    let lines: Vec<&str> = request.split("\r\n").collect();
-    let mut headers = String::new();
-    let mut body = String::new();
-    let mut part = false;
-    for line in lines {
-        if line != "" && part == false {
-            headers.push_str(format!("{}\n", line).as_str());
-        } else if line == "" && part == false {
-            part = true;
-        }
-        if part == true {
-            body.push_str(format!("{}\n", line).as_str());
-        }
+fn parse_request(request: String) -> Response {
+    let parts = request.split("\r\n\r\n").collect::<Vec<&str>>();
+    if parts.len() < 2 {
+        error(&"Invalid server response, failed to parse for headers".to_string(), 1);
     }
     Response {
-        headers: headers.to_string(),
-        body: body.to_string(),
+        headers: parts[0].to_string(),
+        body: parts[1].to_string(),
+    }
+}
+
+fn check_chunked_encoding(buffer: &[u8]) {
+    let inital_chunk = String::from_utf8_lossy(buffer);
+    let _inital_chunk_response = parse_request(inital_chunk.to_string());
+    //println!("{}", inital_chunk_response.headers);
+}
+
+fn add_buffers_to_response(header_buffer: &[u8], data_buffer: &[u8]) -> Response {
+    Response {
+        headers: String::from_utf8_lossy(header_buffer).to_string(),
+        body: String::from_utf8_lossy(data_buffer).to_string(),
     }
 }

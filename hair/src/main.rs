@@ -8,7 +8,7 @@ mod tcp_lib;
 use fn_lib::{error, fenv_var};
 use parse::{parse_args};
 use struct_lib::{Request, Url};
-use tcp_lib::{connect_stream, parse_request, send_request_and_recv};
+use tcp_lib::{connect_stream, send_request_and_recv};
 
 use std::env::args;
 use std::io::prelude::*;
@@ -34,15 +34,14 @@ fn main() {
 
     let mut stream = connect_stream(&request.url);
 
-    let raw_data = send_request_and_recv(&mut stream, &request);
-    let response = parse_request(raw_data);
+    let response = send_request_and_recv(&mut stream, &request);
 
     let print_verbose = fenv_var("HAIR_PRINT_VERBOSE");
-    let print_body = fenv_var("HAIR_PRINT_BODY");
     let print_headers = fenv_var("HAIR_PRINT_HEADERS");
-
+    let print_body = fenv_var("HAIR_PRINT_BODY");
     
-    
+    println!("{}\n{}\n{}", print_verbose, print_headers, print_body);
+    /*
     if print_headers == '1'.to_string() && print_verbose != '1'.to_string() {
         println!("{}", response.headers);
     }
@@ -52,9 +51,11 @@ fn main() {
     }
 
     if print_body != '1'.to_string() && print_headers != '1'.to_string() || print_verbose == '1'.to_string(){
-        println!("{}{}", response.headers, response.body);
+        println!("{}\n{}", response.headers, response.body);
     }
-    
+    */
+
+    println!("Headers:\n{}\nBody:\n{}", response.headers, response.body);
 
     match stream.flush() {
         Ok(_) => (),
