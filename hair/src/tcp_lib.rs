@@ -23,9 +23,9 @@ pub fn connect_stream(url: &Url) -> TcpStream {
 
 pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Response {
     let user_agent: String = format!("hair/{}", VERSION);
-    let mut http_protocol_version = "1.0";
+    let mut http_protocol_version = "1.1";
     if fenv_var("HAIR_USE_OLD_PROTOCOL") == "1".to_string() {
-        http_protocol_version = "1.1";
+        http_protocol_version = "1.0";
     }
 
     let send_request = format!(
@@ -51,12 +51,8 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
 
     let mut data_buffer = Vec::new();
     let mut buffer = [0; 8192];
-
-    /*let type_of_result = response_end_indicator(&header_buffer);
-    if type_of_result == None {
-        println!("Couldnt find end of response indicator");
-    }*/
     let mut first_response = true;
+    let mut response_type = None;
 
     loop {
         let bytes_read = match stream.read(&mut buffer) {
@@ -67,14 +63,34 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
             },
         };
         if first_response == true {
-            response_end_indicator(&buffer);
+            response_type = response_end_indicator(&buffer);
+            if response_type == Some(false) {
+                parse_content_length(&buffer);
+            }
             first_response = false;
         }
-        if bytes_read == 0 {
-            break;
+        match response_type {
+            None => {
+                println!("Checking end for unknown response terminator");
+                if bytes_read == 0 {
+                    break;
+                }
+            },
+            Some(true) => {
+                println!("Checking end for chunked encoding");
+                if bytes_read == 0 {
+                    break;
+                }
+            },
+            Some(false) => {
+                println!("Checking end for content-length encoding");
+                if bytes_read == 0 {
+                    break;
+                }
+            },
         }
-        data_buffer.extend_from_slice(&buffer[..bytes_read]);
 
+        data_buffer.extend_from_slice(&buffer[..bytes_read]);
     }
 
     return parse_request(&buffer);
@@ -98,9 +114,27 @@ fn response_end_indicator(buffer: &[u8]) -> Option<bool> {
     if inital_chunk_response.headers.contains("Transfer-Encoding: chunked") {
         return Some(true);
     }
-    if inital_chunk_response.headers.contains("Content-Length") {
+    if inital_chunk_response.headers.contains("Content-Length:") {
         return Some(false);
     }
 
     return None;
+}
+
+fn parse_content_length(buffer: &[u8]) -> i32 {
+    let data = parse_request(buffer).headers;
+    let content_length_vec = data.split("Content-Length: ").collect::<Vec<&str>>();
+    if content_length_vec.len() < 2 {
+        error(&"Invalid server response, failed to parse for content-length".to_string(), 1);
+    }
+    let content_length_str = content_length_vec[1].split("\r\n").collect::<Vec<&str>>()[0];
+    let content_length_int = match content_length_str.parse::<i32>() {
+        Ok(i) => i,
+        Err(e) => {
+            error(&format!("Invalid server response, failed to parse for content-length: {}: {:?}", e, content_length_str), 1);
+            0
+        },
+    };
+    println!("{:?}", content_length_int);
+    0
 }
