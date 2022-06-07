@@ -3,6 +3,7 @@ mod version;
 mod verbose;
 mod body;
 mod headers;
+mod old;
 
 use super::cli_lib::{Arg};
 
@@ -38,6 +39,12 @@ pub fn list_commands() -> Vec<Arg> {
             long: headers:: LONG,
             help: headers:: HELP,
         },
+        Arg {
+            name: old:: NAME,
+            short: old::SHORT,
+            long: old:: LONG,
+            help: old:: HELP,
+        },
     ];
     commands
 }
@@ -49,6 +56,7 @@ pub fn run_command(arg: &str) {
         "Verbose" => verbose::run(),
         "Body" => body::run(),
         "Headers" => headers::run(),
+        "Old HTTP Method" => old::run(),
         _ => help::run(),
     }
 }

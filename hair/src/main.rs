@@ -6,7 +6,7 @@ mod struct_lib;
 mod tcp_lib;
 
 use fn_lib::{error, fenv_var};
-use parse::{parse_args};
+use parse::parse_args;
 use struct_lib::{Request, Url};
 use tcp_lib::{connect_stream, send_request_and_recv};
 
@@ -40,22 +40,18 @@ fn main() {
     let print_headers = fenv_var("HAIR_PRINT_HEADERS");
     let print_body = fenv_var("HAIR_PRINT_BODY");
     
-    println!("{}\n{}\n{}", print_verbose, print_headers, print_body);
-    /*
     if print_headers == '1'.to_string() && print_verbose != '1'.to_string() {
         println!("{}", response.headers);
     }
-    
     if print_body == '1'.to_string() && print_verbose != '1'.to_string() {
         println!("{}", response.body);
     }
 
-    if print_body != '1'.to_string() && print_headers != '1'.to_string() || print_verbose == '1'.to_string(){
-        println!("{}\n{}", response.headers, response.body);
+    if print_body != '1'.to_string() && print_headers != '1'.to_string()
+        || print_verbose == '1'.to_string()
+    {
+        println!("{}\n\n{}", response.headers, response.body);
     }
-    */
-
-    println!("Headers:\n{}\nBody:\n{}", response.headers, response.body);
 
     match stream.flush() {
         Ok(_) => (),
@@ -67,8 +63,10 @@ fn init_env() {
     let print_verbose = 0;
     let print_body = 0;
     let print_headers = 0;
+    let use_old_protocol = 0;
 
     std::env::set_var("HAIR_PRINT_VERBOSE", print_verbose.to_string());
     std::env::set_var("HAIR_PRINT_BODY", print_body.to_string());
     std::env::set_var("HAIR_PRINT_HEADERS", print_headers.to_string());
+    std::env::set_var("HAIR_USE_OLD_PROTOCOL", use_old_protocol.to_string());
 }

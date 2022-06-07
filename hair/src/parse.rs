@@ -9,7 +9,7 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
     };
     let mut method: Option<String> = None;
     if args.len() < 2 {
-        println!("Error: No arguments provided\n");
+        eprintln!("Error: No arguments provided\n");
         run_command("Help");
     }
     let mut url_provided = false;
@@ -31,19 +31,24 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
                 }
             }
             if has_run == false {
-                has_run = parse_single_args(&arg);
+                match parse_single_args(&arg, &mut has_run) {
+                    Ok(()) => (),
+                    Err(e) => return Err(e),
+                }
             }
             if has_run == false {
                 return Err(format!("Invalid command: {:?}", arg));
             }
-        } else if arg.contains("://") || arg.contains(".") || arg.contains(":") && !arg.contains(" ") {
+        } else if arg.contains("://")
+            || arg.contains(".")
+            || arg.contains(":") && !arg.contains(" ")
+        {
             url = parse_url(&arg).unwrap();
             url_provided = true;
         } else if arg.to_uppercase() == arg {
             method = Some(arg.to_string());
         }
     }
-    
     if url_provided == false {
         return Err("No URL provided".to_string());
     }
@@ -80,12 +85,16 @@ fn parse_url(url: &String) -> Result<Url, String> {
     }
 
     if host.split(":").collect::<Vec<&str>>().len() > 1 {
-        let port_opt = host.split(":").collect::<Vec<&str>>()[1].to_string().split("/").collect::<Vec<&str>>()[0].to_string();
+        let port_opt = host.split(":").collect::<Vec<&str>>()[1]
+            .to_string()
+            .split("/")
+            .collect::<Vec<&str>>()[0]
+            .to_string();
         if port_opt.parse::<u16>().is_ok() {
             port = Some(port_opt);
         } else {
             return Err(format!("Invalid port: {}", port_opt));
-        } 
+        }
     } else {
         port = None;
     }
@@ -101,20 +110,31 @@ fn parse_url(url: &String) -> Result<Url, String> {
     })
 }
 
-
-fn parse_single_args(arg: &str) -> bool {
-    let mut has_run = false;
+fn parse_single_args(arg: &str, has_run: &mut bool) -> Result<(), String> {
+    let mut error_args: Vec<String> = vec![];
     for a in arg.chars() {
-        for command in list_commands() {
-            let short = match command.short {
-                Some(s) => s,
-                None => ' ',
-            };
-            if short == a {
-                run_command(&command.name);
-                has_run = true;
+        if a.is_alphanumeric() {
+            *has_run = false;
+            for command in list_commands() {
+                let short = match command.short {
+                    Some(s) => s,
+                    None => ' ',
+                };
+                if short == a {
+                    run_command(&command.name);
+                    *has_run = true;
+                }
+            }
+            if has_run == &false {
+                let err_arg = format!("\"-{}\"", a);
+                error_args.push(err_arg);
             }
         }
     }
-    has_run
+    if error_args.len() > 0 && error_args.len() < 2 {
+        return Err(format!("Invalid command: {}", error_args.join(" ")));
+    } else if error_args.len() > 1 {
+        return Err(format!("Invalid commands: {}", error_args.join(" ")));
+    }
+    Ok(())
 }
