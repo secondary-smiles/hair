@@ -4,6 +4,7 @@ mod fn_lib;
 mod parse;
 mod struct_lib;
 mod tcp_lib;
+mod color_lib;
 
 use fn_lib::{error, fenv_var};
 use parse::{parse_args};

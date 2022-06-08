@@ -1,5 +1,6 @@
 use super::args_lib::{list_commands, run_command};
 use super::struct_lib::{Request, Url};
+use super::fn_lib::{do_error};
 
 pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
     let mut url: Url = Url {
@@ -9,8 +10,8 @@ pub fn parse_args(args: Vec<String>) -> Result<Request, String> {
     };
     let mut method: Option<String> = None;
     if args.len() < 2 {
-        println!("Error: No arguments provided\n");
-        run_command("Help");
+        do_error(&"No arguments provided".to_string(), 1, &"Help".to_string());
+        //return Err("No arguments provided".to_string());
     }
     let mut url_provided = false;
     for arg in args {

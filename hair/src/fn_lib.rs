@@ -1,6 +1,16 @@
+use super::color_lib::colors_8_16::{c, r};
+use super::args_lib::{run_command};
+
 pub fn error(message: &String, code: i32) {
-    println!("ERROR: {}", message);
+    println!("{}ERROR:{} {}",c("red", true), r(), message);
     std::process::exit(code);
+}
+
+pub fn do_error(message: &String, code: i32, special: &str) {
+    println!("{}ERROR:{} {}",c("red", true), r(), message);
+    run_command(special);
+    std::process::exit(code);
+
 }
 
 pub fn fenv_var(name: &str) -> String {
