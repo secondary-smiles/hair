@@ -100,8 +100,6 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
                 }
             }
         }
-        //let headers_len = parse_request(&first_buffer).body.len();
-        //println!("{}\n{}\n{}\n", content_length, headers_len, total_bytes_read);
         data_buffer.extend_from_slice(&buffer[..bytes_read]);
     }
 
