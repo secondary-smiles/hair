@@ -87,16 +87,12 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
         }
         match response_type {
             None => {
-                println!("Checking end for unknown response terminator");
                 if bytes_read == 0 {
                     break;
                 }
             }
             Some(true) => {
-                println!("Checking end for chunked encoding");
-                if bytes_read == 0 {
-                    break;
-                }
+                error(&"Chunked encoding not yet supported with HTTP/1.1, consider using HTTP/1.0 by adding the '-o' flag to the command".to_string(), 1);
             }
             Some(false) => {
                 if content_length as usize + headers_len == total_bytes_read {
