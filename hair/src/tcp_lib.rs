@@ -2,17 +2,26 @@ use std::io::prelude::*;
 use std::net::TcpStream;
 
 use super::cli_lib::VERSION;
-use super::struct_lib::{Request, Response, Url};
 use super::fn_lib::{error, fenv_var};
+use super::struct_lib::{Request, Response, Url};
 
 pub fn connect_stream(url: &Url) -> TcpStream {
     let mut stream: TcpStream;
-    match TcpStream::connect(format!("{}:{}", url.host, url.port.clone().unwrap_or("80".to_string()))) {
+    match TcpStream::connect(format!(
+        "{}:{}",
+        url.host,
+        url.port.clone().unwrap_or("80".to_string())
+    )) {
         Ok(s) => stream = s,
-        Err(e) =>{ 
+        Err(e) => {
             error(&e.to_string(), 1);
-            stream = TcpStream::connect(format!("{}:{}", url.host, url.port.clone().unwrap_or("80".to_string()))).unwrap();
-        },
+            stream = TcpStream::connect(format!(
+                "{}:{}",
+                url.host,
+                url.port.clone().unwrap_or("80".to_string())
+            ))
+            .unwrap();
+        }
     }
     match stream.flush() {
         Ok(_) => (),
@@ -39,7 +48,6 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
     );
 
     let print_verbose = fenv_var("HAIR_PRINT_VERBOSE");
-    
     if print_verbose == '1'.to_string() {
         println!("{}", send_request);
     }
@@ -51,8 +59,12 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
 
     let mut data_buffer = Vec::new();
     let mut buffer = [0; 8192];
+    //let mut first_buffer = [0; 8192];
     let mut first_response = true;
     let mut response_type = None;
+    let mut total_bytes_read = 0;
+    let mut content_length = 0;
+    let mut headers_len = 0;
 
     loop {
         let bytes_read = match stream.read(&mut buffer) {
@@ -60,13 +72,17 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
             Err(e) => {
                 error(&e.to_string(), 1);
                 0
-            },
+            }
         };
+        total_bytes_read += bytes_read;
+        
         if first_response == true {
             response_type = response_end_indicator(&buffer);
+            //first_buffer = buffer;
             if response_type == Some(false) {
-                parse_content_length(&buffer);
+                content_length = parse_content_length(&buffer);
             }
+            headers_len = parse_request(&buffer).headers.len() + 4;
             first_response = false;
         }
         match response_type {
@@ -75,21 +91,21 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
                 if bytes_read == 0 {
                     break;
                 }
-            },
+            }
             Some(true) => {
                 println!("Checking end for chunked encoding");
                 if bytes_read == 0 {
                     break;
                 }
-            },
+            }
             Some(false) => {
-                println!("Checking end for content-length encoding");
-                if bytes_read == 0 {
+                if content_length as usize + headers_len == total_bytes_read {
                     break;
                 }
-            },
+            }
         }
-
+        //let headers_len = parse_request(&first_buffer).body.len();
+        //println!("{}\n{}\n{}\n", content_length, headers_len, total_bytes_read);
         data_buffer.extend_from_slice(&buffer[..bytes_read]);
     }
 
@@ -100,18 +116,24 @@ fn parse_request(request: &[u8]) -> Response {
     let data_string = String::from_utf8_lossy(&request);
     let parts = data_string.split("\r\n\r\n").collect::<Vec<&str>>();
     if parts.len() < 2 {
-        error(&"Invalid server response, failed to parse for headers".to_string(), 1);
+        error(
+            &"Invalid server response, failed to parse for headers".to_string(),
+            1,
+        );
     }
     Response {
-        headers: parts[0].to_string(),
-        body: parts[1].to_string(),
+        headers: parts[0].trim_matches(char::from(0)).trim().to_string(),
+        body: parts[1].trim_matches(char::from(0)).trim().to_string(),
     }
 }
 
 fn response_end_indicator(buffer: &[u8]) -> Option<bool> {
     // Chunked Transfer Encoding: True; Content-Length: False; Unknown: None;
     let inital_chunk_response = parse_request(buffer);
-    if inital_chunk_response.headers.contains("Transfer-Encoding: chunked") {
+    if inital_chunk_response
+        .headers
+        .contains("Transfer-Encoding: chunked")
+    {
         return Some(true);
     }
     if inital_chunk_response.headers.contains("Content-Length:") {
@@ -125,16 +147,24 @@ fn parse_content_length(buffer: &[u8]) -> i32 {
     let data = parse_request(buffer).headers;
     let content_length_vec = data.split("Content-Length: ").collect::<Vec<&str>>();
     if content_length_vec.len() < 2 {
-        error(&"Invalid server response, failed to parse for content-length".to_string(), 1);
+        error(
+            &"Invalid server response, failed to parse for content-length".to_string(),
+            1,
+        );
     }
     let content_length_str = content_length_vec[1].split("\r\n").collect::<Vec<&str>>()[0];
     let content_length_int = match content_length_str.parse::<i32>() {
         Ok(i) => i,
         Err(e) => {
-            error(&format!("Invalid server response, failed to parse for content-length: {}: {:?}", e, content_length_str), 1);
+            error(
+                &format!(
+                    "Invalid server response, failed to parse for content-length: {}: {:?}",
+                    e, content_length_str
+                ),
+                1,
+            );
             0
-        },
+        }
     };
-    println!("{:?}", content_length_int);
-    0
+    return content_length_int;
 }
