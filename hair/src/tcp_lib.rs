@@ -59,9 +59,8 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
 
     let mut data_buffer = Vec::new();
     let mut buffer = [0; 8192];
-    //let mut first_buffer = [0; 8192];
     let mut first_response = true;
-    let mut response_type = None;
+    let mut response_type = 0;
     let mut total_bytes_read = 0;
     let mut content_length = 0;
     let mut headers_len = 0;
@@ -78,38 +77,41 @@ pub fn send_request_and_recv(stream: &mut TcpStream, request: &Request) -> Respo
         
         if first_response == true {
             response_type = response_end_indicator(&buffer);
-            //first_buffer = buffer;
-            if response_type == Some(false) {
+            if response_type == 1 {
                 content_length = parse_content_length(&buffer);
             }
             headers_len = parse_request(&buffer).headers.len() + 4;
             first_response = false;
         }
         match response_type {
-            None => {
+            0 => {
                 if bytes_read == 0 {
                     break;
                 }
             }
-            Some(true) => {
-                error(&"Chunked encoding not yet supported with HTTP/1.1, consider using HTTP/1.0 by adding the '-o' flag to the command".to_string(), 1);
-            }
-            Some(false) => {
+            1 => {
                 if content_length as usize + headers_len == total_bytes_read {
                     break;
                 }
+            }
+            2 => {
+                error(&"Chunked encoding not yet supported with HTTP/1.1, consider using HTTP/1.0 by adding the '-o' flag to the command".to_string(), 1);
+            }
+            _ => {
+                error(&"Unknown function return".to_string(), 1);
             }
         }
         data_buffer.extend_from_slice(&buffer[..bytes_read]);
     }
 
-    return parse_request(&buffer);
+    return parse_request(&data_buffer);
 }
 
 fn parse_request(request: &[u8]) -> Response {
     let data_string = String::from_utf8_lossy(&request);
     let parts = data_string.split("\r\n\r\n").collect::<Vec<&str>>();
     if parts.len() < 2 {
+        println!("{:?}", parts.len());
         error(
             &"Invalid server response, failed to parse for headers".to_string(),
             1,
@@ -121,20 +123,22 @@ fn parse_request(request: &[u8]) -> Response {
     }
 }
 
-fn response_end_indicator(buffer: &[u8]) -> Option<bool> {
-    // Chunked Transfer Encoding: True; Content-Length: False; Unknown: None;
+fn response_end_indicator(buffer: &[u8]) -> i8 {
+    // Content-Length: 1; Chunked Transfer Encoding: 2; Unknown: 0;
     let inital_chunk_response = parse_request(buffer);
+
+    if inital_chunk_response.headers.contains("Content-Length:") {
+        return 1;
+    }
+
     if inital_chunk_response
         .headers
         .contains("Transfer-Encoding: chunked")
     {
-        return Some(true);
-    }
-    if inital_chunk_response.headers.contains("Content-Length:") {
-        return Some(false);
+        return 2;
     }
 
-    return None;
+    return 0;
 }
 
 fn parse_content_length(buffer: &[u8]) -> i32 {

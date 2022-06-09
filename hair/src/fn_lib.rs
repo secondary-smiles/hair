@@ -1,5 +1,7 @@
 pub fn error(message: &String, code: i32) {
-    eprintln!("ERROR: {}", message);
+    for line in message.lines() {
+        eprintln!("ERROR: {}", line);
+    }
     std::process::exit(code);
 }
 
