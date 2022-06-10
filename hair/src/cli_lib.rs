@@ -9,11 +9,15 @@ pub struct Arg {
 
 impl std::fmt::Debug for Arg {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "Arg {{ name: {}, short: {:?}, long: {:?}, help: {} }}", self.name, self.short, self.long, self.help)
+        write!(
+            f,
+            "Arg {{ name: {}, short: {:?}, long: {:?}, help: {} }}",
+            self.name, self.short, self.long, self.help
+        )
     }
 }
 
-impl Copy for Arg { }
+impl Copy for Arg {}
 
 impl Clone for Arg {
     fn clone(&self) -> Arg {

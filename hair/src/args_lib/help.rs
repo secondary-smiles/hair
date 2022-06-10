@@ -1,9 +1,12 @@
-use super::{list_commands};
+use super::super::cli_lib::Arg;
+use super::list_commands;
 
-pub const NAME: &'static str = "Help";
-pub const SHORT: Option<char> = Some('h');
-pub const LONG: Option<&'static str> = Some("help");
-pub const HELP: &'static str = "Print the help message";
+pub const ARG: Arg = Arg {
+    name: "Help",
+    short: Some('h'),
+    long: Some("help"),
+    help: "Print the help message",
+};
 
 pub fn run() {
     println!("Usage:\n\thair [OPTIONS] [method] URL\n");
@@ -21,9 +24,15 @@ pub fn run() {
         };
         let info_line;
         if arg_short != "" && arg_long != "" {
-            info_line = format!("\t{}\t\t{}, {}\t\t{}", command.name, arg_short, arg_long, command.help);
+            info_line = format!(
+                "\t{}\t\t{}, {}\t\t{}",
+                command.name, arg_short, arg_long, command.help
+            );
         } else {
-            info_line = format!("\t{}\t\t{}{}\t\t{}", command.name, arg_short, arg_long, command.help);
+            info_line = format!(
+                "\t{}\t\t{}{}\t\t{}",
+                command.name, arg_short, arg_long, command.help
+            );
         }
         println!("{}", info_line);
     }

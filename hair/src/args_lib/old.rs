@@ -1,9 +1,12 @@
-pub const NAME: &'static str = "Old HTTP Method";
-pub const SHORT: Option<char> = Some('o');
-pub const LONG: Option<&'static str> = Some("old-http-method");
-pub const HELP: &'static str = "Use HTTP 1.0 instead of 1.1";
+use super::super::cli_lib::Arg;
+use super::super::fn_lib::toggleenv_var;
 
-use super::super::fn_lib::{toggleenv_var};
+pub const ARG: Arg = Arg {
+    name: "Old HTTP Method",
+    short: Some('o'),
+    long: Some("old-http-method"),
+    help: "Use HTTP 1.0 instead of 1.1",
+};
 
 pub fn run() {
     let use_old_protocol = toggleenv_var("HAIR_USE_OLD_PROTOCOL");

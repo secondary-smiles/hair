@@ -1,5 +1,7 @@
 pub fn error(message: &String, code: i32) {
-    eprintln!("ERROR: {}", message);
+    for line in message.lines() {
+        eprintln!("ERROR:\t{}", line);
+    }
     std::process::exit(code);
 }
 
@@ -10,7 +12,7 @@ pub fn fenv_var(name: &str) -> String {
             let msg = format!("Could not find ENV variable: {}", name);
             error(&msg, 1);
             "".to_string()
-        },
+        }
     }
 }
 
@@ -25,6 +27,6 @@ pub fn toggleenv_var(name: &str) -> String {
             let msg = format!("Could not find ENV variable: {}", name);
             error(&msg, 1);
             "0".to_string()
-        },
+        }
     }
 }
