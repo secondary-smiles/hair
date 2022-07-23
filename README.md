@@ -16,6 +16,8 @@
 
 <!-- SHIELDS END -->
 
+#### NOTE: Due to the lack of necessity for more HTTP clients I'm going to archive this repo until I decide to pick it up again someday
+
 **Hair is a stupid, simple, and small HTTP command-line client made in Rust.**
 <br>
     <img alt="Hair Demo" width="349" src="https://raw.githubusercontent.com/secondary-smiles/hair/master/social/Hair-Demo.gif" />
